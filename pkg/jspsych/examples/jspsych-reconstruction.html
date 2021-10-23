@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../jspsych.js"></script>
+    <script src="../plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="../plugins/jspsych-reconstruction.js"></script>
+    <script src="../../ColorConverter.js"></script>
+    <link rel="stylesheet" href="../css/jspsych.css">
+  </head>
+  <body></body>
+  <script>
+
+  var maxLight = 70
+  var minLight = 30
+  var color = getRandomColor()
+  var midLightVal = getRandomInt(minLight, maxLight)
+
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+  }
+
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+      }
+    return color;
+  }
+
+
+  var sample_function = function(param){
+    console.log(param)
+    midLightVal = minLight + (param * (maxLight - minLight))
+    console.log(midLightVal)
+    var size = 50;
+    var hslBrightColor = hexToHSL(color)
+    var hslDarkColor = hexToHSL(color)
+    var hslMidRandColor = hexToHSL(color)
+    
+    hslDarkColor['l']=minLight
+    hslBrightColor['l']=maxLight
+    hslMidRandColor['l']=midLightVal
+    
+    var hexBrightColor = HSLToHex(hslBrightColor['h'],hslBrightColor['s'], hslBrightColor['l']) 
+    var hexDarkColor = HSLToHex(hslDarkColor['h'],hslDarkColor['s'], hslDarkColor['l'])
+    var hexMidRandColor = HSLToHex(hslMidRandColor['h'],hslMidRandColor['s'], hslMidRandColor['l'])
+    
+    var html = '<div style="display: block; margin: auto; height: 300px; width: 300px; position: relative;">'+
+      '<div style="display: block; position: absolute; top: '+(150 - size/2)+'px; left:'+(50 - size/2)+'px; background-color: '+hexBrightColor+'; '+
+      'width: '+size+'px; height: '+size+'px;"></div>'+
+      '<div style="display: block; position: absolute; top: '+(150 - size/2)+'px; left:'+(250 - size/2)+'px; background-color: '+hexDarkColor+'; '+
+      'width: '+size+'px; height: '+size+'px;"></div>'+
+      '<div style="display: block; position: absolute; top: '+(250- size/2)+'px; left:'+(150 - size/2)+'px; background-color: '+hexMidRandColor+'; '+
+      'width: '+size+'px; height: '+size+'px;"></div></div>'
+      '<p>Press H to make the square larger. Press G to make the square smaller.</p>'+
+      '<p>When the square is the same size as the previous one, click Next.</p>';
+    return html;
+  }
+
+  var test = {
+    type: 'reconstruction',
+    stim_function: sample_function,
+    starting_value: midLightVal / 100,
+    step_size: 0.09,
+    button_label: 'Set',
+    key_increase: 's',
+    key_decrease: 'k',
+    
+
+  }
+  jsPsych.init({
+    timeline: [test],
+    on_finish: function() { jsPsych.data.displayData(); }
+  });
+
+  </script>
+</html>

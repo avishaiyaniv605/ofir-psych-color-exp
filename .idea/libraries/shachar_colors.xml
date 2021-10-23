@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="shachar-colors">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/shachar-colors.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

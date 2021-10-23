@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugins/jspsych-html-button-response.js"></script>
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body></body>
+<script>
+
+    var html = document.createElement( 'html' );
+    html.innerHTML = '<html><head><canvas id="squaresCanvas" width="500" height="500"></canvas></head></html>'
+    var canvas = html.getElementById('squaresCanvas');    
+    var ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#FF3333';
+    ctx.fillRect(100, 70, 100, 40);
+
+    ctx.fillStyle = '#FF6A33';
+    ctx.fillRect(400, 70, 100, 40);
+
+    ctx.fillStyle = '#FF6A33';
+    ctx.fillRect(250, 200, 100, 40);
+
+    var twoSquaresTrial = {
+        type: 'html-button-response',
+        stimulus: html,
+        choices: ['Red', 'Green'],
+        button_html: '<button class="jspsych-btn">%choice%</button>',
+        prompt: '<p>What color is the circle?</p>',
+        data: {color: 'blue', radius: 100}
+    };
+
+    jsPsych.init({
+        timeline: [twoSquaresTrial],
+        on_finish: function () { 
+            jsPsych.data.displayData(); 
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych/plugins/jspsych-serial-reaction-time.js"></script>
+    <link href="jspsych/css/jspsych.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body></body>
+<script>
+
+
+    var trial = {
+        type: 'serial-reaction-time',
+        grid: [[1,1],[1,1]],
+        choices: [['r','t'],['f','g']],
+        target: [1,0],
+        show_response_feedback: true,
+        feedback_duration: 500,
+    }
+
+    var practice_trial = { 
+        type: 'html-keyboard-response',
+        stimulus: 'This is a test trial',
+    }
+
+    jsPsych.init({
+        timeline: [practice_trial, trial],
+        on_finish: function(){
+            jsPsych.data.displayData();
+        }
+    })
+
+</script>
+</html>

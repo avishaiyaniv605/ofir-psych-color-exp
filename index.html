@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link type="text/css" rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+    <style>
+        body {
+            direction: rtl !important;
+            margin: auto !important;
+            overflow-x: hidden !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container p-5 m-5 text-center justify-content-center align-items-center">
+        <p class="d-flex justify-content-center align-items-center">
+        <h1>ניסוי בחירת הצבע</h1>
+        <h5>אוניבסיטת תל אביב</h5>
+        <br />
+        <br />
+        <form class="container">
+            <label class="p-1" for="inputID">הכנס מספר מזהה:</label>
+            <div class="row d-flex justify-content-center mb-2">
+                <input type="text" id="inputID" class="form-control
+                mx-sm-3 w-25" required>
+            </div>
+            <label class="p-1" for="inputPassword">הכנס סיסמה:</label>
+            <div class="row d-flex justify-content-center mb-2">
+                <input type="password" id="inputPassword" class="form-control
+                mx-sm-3 w-25" required>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <button type="submit" onclick="handleSubmit(event)" class="btn
+                btn-primary mx-sm-3 w-25">התחל</button>
+            </div>
+            <div class="row d-flex mt-2 justify-content-center">
+                <p id="wrong-password" class="d-none text-danger">סיסמא שגויה</p>
+            </div>
+        </form>
+    </div>
+</body>
+
+<script>
+    function handleSubmit(e) {
+        e.preventDefault()
+        console.log(document.querySelector('#inputPassword').value)
+        if (document.querySelector('#inputPassword').value === 'tau2021') {
+            location.replace(`ColorJudgmentTask.html?uid=${document.querySelector('#inputID').value}`);
+        } else {
+            document.querySelector('#wrong-password').classList.remove('d-none')
+        }
+    }
+</script>
+
+</html>

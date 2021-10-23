@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../jspsych.js"></script>
+    <script src="../plugins/jspsych-canvas-button-response.js"></script>
+    <link rel="stylesheet" href="../css/jspsych.css">
+</head>
+<body></body>
+<script>
+
+  
+    function twoSquares(c) {    
+        var ctx = c.getContext('2d');
+        ctx.fillStyle = '#FF3333';
+        ctx.fillRect(200, 70, 40, 40);
+        ctx.fillStyle = '#FF6A33';
+        ctx.fillRect(260, 70, 40, 40);
+    }
+
+    var circle_1 = {
+        type: 'canvas-button-response',
+        stimulus: twoSquares,
+        choices: ['Red', 'Green', 'Blue'],
+        prompt: '<p>What color is the circle?</p>',
+        data: {color: 'blue', radius: 100}
+    };
+
+    jsPsych.init({
+        timeline: [circle_1],
+        on_finish: function () { 
+            jsPsych.data.displayData(); 
+        }
+    });
+</script>
+</html>

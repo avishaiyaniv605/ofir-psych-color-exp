@@ -1,0 +1,29 @@
+body {
+    direction: rtl !important;
+    margin: auto !important;
+    overflow-x: hidden !important;
+    width: 770px !important;
+}
+
+.jspsych-btn {
+    margin-right: 5px;
+    margin-left: 5px;
+    width: 80px;
+}
+/* .arrow-key:hover {
+    filter: brightness(80%);
+} */
+
+/* .arrow-key:active {
+    filter: brightness(80%);
+    border: 8px solid rgba(0,0,0,0);
+} */
+
+.hint-example-img {
+    height: 250px;
+}
+
+.arrow-key-clicked {
+    filter: brightness(80%);
+    border: 8px solid rgba(0,0,0,0);
+}
