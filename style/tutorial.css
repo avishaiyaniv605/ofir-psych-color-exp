@@ -1,7 +1,12 @@
 .jspsych-html-slider-response-container,
 #jspsych-html-slider-response-response {
-    cursor: unset !important;
-    pointer-events: none !important;
+    cursor: unset;
+    pointer-events: none;
+}
+
+.question-slider {
+    cursor: pointer;
+    pointer-events: auto !important;
 }
 
 #speech-bubble-right {
