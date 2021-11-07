@@ -2041,7 +2041,6 @@ jsPsych.pluginAPI = (function() {
 
   var root_keydown_listener = function(e){
     for(var i=0; i<keyboard_listeners.length; i++){
-      console.log(keyboard_listeners[i]);
       keyboard_listeners[i].fn(e);
     }
     held_keys[e.keyCode] = true;

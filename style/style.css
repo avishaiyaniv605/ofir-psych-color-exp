@@ -44,4 +44,11 @@ audio::-webkit-media-controls-timeline {
     display: none !important;
 }
 
-
+#participant-id {
+    display: flex;
+    justify-content: space-between;
+    background: #B1D4E0;
+    width: 200px;
+    padding: 6px;
+    border-radius: 5px;
+}

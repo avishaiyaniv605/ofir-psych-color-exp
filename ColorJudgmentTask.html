@@ -27,6 +27,7 @@
     <script src="pkg/jspsych/plugins/jspsych-instructions.js"></script>
     <script src="pkg/jspsych/plugins/jspsych-html-slider-response.js"></script>
     <script src="pkg/ColorConverter.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
 
     <script src="js/blockingtimer.js"></script>
     <script src="js/pressevents.js"></script>
@@ -65,6 +66,10 @@
         relaxing_long: "./assets/music/Relaxing-long.mp3",
         relaxing_short: "./assets/music/Relaxing-short.mp3",
     };
+    // let currentParticipant = -1;
+    const numOfParticipants = 200;
+    let randomParticipants = [...Array(numOfParticipants).keys()]
+        .map(x => x % 2 === 0 ? "groupA" : "groupB");
 
     function getRandomInt(randomGenerator, min, max) { // Gets a random value between min and max. 
         min = Math.ceil(min);
@@ -246,32 +251,6 @@
             trial_data.hintSampleSize = randomSampleSize // record sample size
         }
 
-        if (title === 'experiment 1' && counter === numPressesBeforeHintExp1) {
-            // lock system and show hint and "ok message" requiring confirmation
-            setTimeout(async () => {
-                for (let b of document.querySelectorAll('button')) {
-                    b.disabled = true
-                }
-                for (let k of document.querySelectorAll('.arrow-key')) {
-                    k.classList.add('d-none')
-                }
-                showHint()
-                await new Promise((resolve) => {
-                    let timing = setTimeout(() => {
-                        console.log('resolving')
-                        resolve()
-                    }, 100)
-                })
-                alert('אנא אשרו שראיתם את הרמז.')
-                for (let b of document.querySelectorAll('button')) {
-                    b.disabled = false
-                }
-                for (let k of document.querySelectorAll('.arrow-key')) {
-                    k.classList.remove('d-none')
-                }
-            }, 0)
-        }
-
         const imgSize = 50;
         //Define the three squares sizes and locations and hint button. 
         const arrows = `<img id="right-arrow-key" class="img-responsive arrow-key ${hideRight ? 'd-none' : ''}" src="assets/right_key.png" style="height: 70px; position: absolute; top: ${300 - size / 2}px; left: ${330 - size / 2}px;">
@@ -322,6 +301,8 @@
             </div>
         `;
 
+        const sanityCheck = getSanityCheck(phase, title);
+
         const hintButton = `
         <button id="hint-btn" class="m-5 btn btn-primary ${(withHints === 'with hints') || selectedHint ? '' : 'd-none'}" style="position: fixed; top:0px; right: 0px" 
             ${selectedHint ? 'disabled' : 'onclick="showHint()"'}>
@@ -338,7 +319,21 @@
 
         return `
         <div id="trial" style="display: block; margin: auto; height: 300px; width: 300px; position: relative;">
-        ` + hintIndex + colorSquares + arrows + tutorial + displayedHint + "</div>" + hintButton;
+        ` + sanityCheck + hintIndex + colorSquares + arrows + tutorial + displayedHint + "</div>" + hintButton;
+    }
+
+    const getSanityCheck = (phase, title) => {
+        const shouldCheckInEx1 = phase === 27 && title === "experiment 1";
+        const shouldCheckInEx2 = phase === 36 && title === "experiment 2";
+        const darkOrLight = shouldCheckInEx1 ? "הכהה" : "הבהיר";
+        if (shouldCheckInEx1 || shouldCheckInEx2) {
+            return `
+            <div id="sanity-check" style="right: -100px; position: absolute; bottom: 240px; border-radius: 5px; background: #B1D4E0; width: 500px; padding: 10px; display: flex; justify-content: center; align-items: center;">
+                <span>בצעד זה אתם מתבקשים לבחור בצבע ${darkOrLight} ביותר אליו ניתן להגיע עם החצים. לאחר מכן, חזרו לשחק כרגיל.</span>
+            </div>
+            `;
+        }
+        return `<div></div>`
     }
 
     const create_question = function (timeline, type) {
@@ -347,13 +342,14 @@
                 type: 'html-slider-response',
                 class: 'question-slider',
                 labels: ['1', '2', '3', '4', '5', '6', '7'],
+                min: 1,
+                max: 7,
                 slider_start: 1,
                 slider_end: 7,
-                stimulus: "<p>באיזו מידה הרגשת שאתה מחובר לתחושות הפנימיות שלך במהלך הניסוי?</p>",
+                stimulus: "<p>באיזו מידה הרגשת שאתה מחובר לתחושות הפנימיות שלך במהלך הניסוי?</p> <p>(1 = לא מחובר כלל, 7 = מחובר מאוד)</p>",
                 button_label: 'המשך',
             };
             timeline.push(responce);
-            console.log(timeline)
         }
     }
 
@@ -436,7 +432,7 @@
         }
     }
 
-    // trials 
+    // trials
     var create_trials = function (
         timeline,
         numOfTrials,
@@ -491,8 +487,26 @@
     const create_instructions = function (timeline, type) {
         let instructions
         switch (type) {
+            case 'participant id':
+                instructions = {
+                    type: 'instructions',
+                    pages: [`
+                        <div class="instructions" id="participant-id">
+                            <span>מספר הנבדק שהוכנס: #${getCurrentParticipantOrElse()}</span>
+                        </div>
+                    `],
+                    show_clickable_nav: isCurrentUserValid(),
+                    button_label_next: 'הבא',
+                    button_label_previous: 'הקודם',
+                    allow_keys: true,
+                    key_forward: 'leftarrow',
+                    key_backward: 'rightarrow',
+                }
+                break;
+
             case 'manipulation_long':
-                const audioFileLong = isConditionA() ? audioFiles.mindfulness_long : audioFiles.relaxing_long;
+                const audioFileLong = isGroupA() ? audioFiles.mindfulness_long : audioFiles.relaxing_long;
+                console.log(audioFileLong)
                 instructions = {
                     type: 'instructions',
                     pages: [`
@@ -516,7 +530,7 @@
                 break;
 
             case 'manipulation_short':
-                const audioFileShort = isConditionA() ? audioFiles.mindfulness_short : audioFiles.relaxing_short;
+                const audioFileShort = isGroupA() ? audioFiles.mindfulness_short : audioFiles.relaxing_short;
                 instructions = {
                     type: 'instructions',
                     pages: [`
@@ -750,32 +764,38 @@
     // ========================================================================
     // ================= Timeline Setup for the Entire Study ==================
     // ========================================================================
+
+    randomParticipants = _.chunk(randomParticipants, 10);
+    randomParticipants = randomParticipants.map(tenElem => _.shuffle(tenElem));
     var timeline = []
 
-    // create_instructions(timeline, 'manipulation_long')
-    //
-    // // Introduction Message
-    // create_instructions(timeline, 'start')
-    //
-    // // Practice Runs
-    // create_instructions(timeline, 'practice 1')
-    // create_trials(timeline, 5, 'practice 1', 'no feedback', 'no hints')
-    //
-    // create_instructions(timeline, 'practice 2')
-    // create_trials(timeline, 5, 'practice 2', 'with feedback', 'no hints')
-    //
-    // create_instructions(timeline, 'practice 3')
-    // create_trials(timeline, 5, 'practice 3', 'no feedback', 'with hints', [5], 0, 0.8)
-    //
-    // // 1st experiment
-    // create_instructions(timeline, 'experiment 1')
-    // create_trials(timeline, 50, 'experiment 1', 'no feedback', 'no hints', [5], 0, 0.8)
-    //
+    create_instructions(timeline, 'participant id');
+
+    console.table(randomParticipants)
+    create_instructions(timeline, 'manipulation_long');
+
+    // Introduction Message
+    create_instructions(timeline, 'start')
+
+    // Practice Runs
+    create_instructions(timeline, 'practice 1')
+    create_trials(timeline, 5, 'practice 1', 'no feedback', 'no hints')
+
+    create_instructions(timeline, 'practice 2')
+    create_trials(timeline, 5, 'practice 2', 'with feedback', 'no hints')
+
+    create_instructions(timeline, 'practice 3')
+    create_trials(timeline, 5, 'practice 3', 'no feedback', 'with hints', [5], 0, 0.8)
+
+    // 1st experiment
+    create_instructions(timeline, 'experiment 1')
+    create_trials(timeline, 50, 'experiment 1', 'no feedback', 'no hints', [5], 0, 0.8)
+
     // create_instructions(timeline, 'manipulation_short')
-    //
-    // // 2nd experiment
-    // create_instructions(timeline, 'experiment 2')
-    // create_trials(timeline, 50, 'experiment 2', 'no feedback', 'with hints', [5], 10, 1)
+
+    // 2nd experiment
+    create_instructions(timeline, 'experiment 2')
+    create_trials(timeline, 50, 'experiment 2', 'no feedback', 'with hints', [5], 10, 1)
 
     create_question(timeline, 'confidence');
 
