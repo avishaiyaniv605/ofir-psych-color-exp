@@ -28,11 +28,12 @@
     <script src="pkg/jspsych/plugins/jspsych-html-slider-response.js"></script>
     <script src="pkg/ColorConverter.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.1.8/chance.min.js" integrity="sha512-dELYIOEzIECWdvsEdoywFOB4qKDmtQee33yD0dQnzAE7eBGKJ984VQXRLs/vlsP4Sb3VchbQL7iAy4NWqetCsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/blockingtimer.js"></script>
     <script src="js/pressevents.js"></script>
     <script src="js/env.js"></script>
     <script src="js/audioManager.js"></script>
+    <script src="js/randomizer.js"></script>
 </head>
 
 <body>
@@ -765,8 +766,9 @@
     // ================= Timeline Setup for the Entire Study ==================
     // ========================================================================
 
+    const shuffler = new Chance(123456789);
     randomParticipants = _.chunk(randomParticipants, 10);
-    randomParticipants = randomParticipants.map(tenElem => _.shuffle(tenElem));
+    randomParticipants = randomParticipants.map(tenElem => shuffler.shuffle(tenElem));
     var timeline = []
 
     create_instructions(timeline, 'participant id');
