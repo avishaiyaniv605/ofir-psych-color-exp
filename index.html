@@ -766,22 +766,22 @@
     randomParticipants = randomParticipants.map(tenElem => shuffler.shuffle(tenElem));
     var timeline = []
 
-    // create_instructions(timeline, 'participant id');
+    create_instructions(timeline, 'participant id');
 
-    // create_instructions(timeline, 'manipulation_long');
+    create_instructions(timeline, 'manipulation_long');
 
     // Introduction Message
-    // create_instructions(timeline, 'start');
+    create_instructions(timeline, 'start');
 
     // Practice Runs
-    // create_instructions(timeline, 'practice 1');
-    // create_trials(timeline, 5, 'practice 1', 'no feedback', 'no hints');
+    create_instructions(timeline, 'practice 1');
+    create_trials(timeline, 5, 'practice 1', 'no feedback', 'no hints');
 
-    // create_instructions(timeline, 'practice 2');
-    // create_trials(timeline, 5, 'practice 2', 'with feedback', 'no hints');
+    create_instructions(timeline, 'practice 2');
+    create_trials(timeline, 5, 'practice 2', 'with feedback', 'no hints');
 
-    // create_instructions(timeline, 'practice 3');
-    // create_trials(timeline, 5, 'practice 3', 'no feedback', 'with hints', [5], 0, 0.8);
+    create_instructions(timeline, 'practice 3');
+    create_trials(timeline, 5, 'practice 3', 'no feedback', 'with hints', [5], 0, 0.8);
 
     // 1st experiment
     create_instructions(timeline, 'experiment 1');
