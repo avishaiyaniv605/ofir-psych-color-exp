@@ -28,7 +28,7 @@ function getCurrentParticipantOrElse(orElse) {
     const currentParticipant = getCurrentParticipant();
 
     if (!isCurrentUserValid()) {
-        return orElse ?? "משתמש לא תקין";
+        return orElse ?? "מספר נבדק אינו תקין";
     }
     return currentParticipant;
 }

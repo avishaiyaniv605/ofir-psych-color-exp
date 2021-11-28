@@ -28,7 +28,9 @@
     <script src="pkg/jspsych/plugins/jspsych-html-slider-response.js"></script>
     <script src="pkg/ColorConverter.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.1.8/chance.min.js" integrity="sha512-dELYIOEzIECWdvsEdoywFOB4qKDmtQee33yD0dQnzAE7eBGKJ984VQXRLs/vlsP4Sb3VchbQL7iAy4NWqetCsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.1.8/chance.min.js"
+            integrity="sha512-dELYIOEzIECWdvsEdoywFOB4qKDmtQee33yD0dQnzAE7eBGKJ984VQXRLs/vlsP4Sb3VchbQL7iAy4NWqetCsw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/blockingtimer.js"></script>
     <script src="js/pressevents.js"></script>
     <script src="js/env.js"></script>
@@ -62,8 +64,8 @@
     let prevValue = -1
     let currentValue = -1
     const audioFiles = {
-        mindfulness_long: "./assets/music/Mindfullness-long.m4a",
-        mindfulness_short: "./assets/music/Mindfullness-short.m4a",
+        mindfulness_long: "./assets/music/Mindfulness-long.m4a",
+        mindfulness_short: "./assets/music/Mindfulness-short.m4a",
         relaxing_long: "./assets/music/Relaxing-long.mp3",
         relaxing_short: "./assets/music/Relaxing-short.mp3",
     };
@@ -112,15 +114,17 @@
                                     numPressesBeforeHintExp1,
                                     title,
                                     phase) {
+        console.log("BEFORE", currentValue)
+
         let tutorial = '';
         let hideLeft = false;
         let hideRight = false;
         const tutorialClicksBeforeCalc = tutorialClicks;
-        if (title === 'practice 1' && phase == 0) {
+        if (title === 'practice 1' && phase === 0) {
             if (tutorialClicks > 0) {
                 currentValue = Number((1 - param).toFixed(2));
                 if (tutorialClicks > 10) {
-                    if (prevValue != -1 && currentValue > prevValue) {
+                    if (prevValue !== -1 && currentValue > prevValue) {
                         tutorialClicks--;
                     }
                 }
@@ -131,10 +135,6 @@
                 }
 
                 prevValue = currentValue;
-            }
-
-            if (tutorialClicksBeforeCalc != tutorialClicks && tutorialClicks % 10) {
-                return document.querySelector('#trial').parentNode.innerHTML;
             }
 
             if (tutorialClicks > 10) {
@@ -150,7 +150,7 @@
                     " רצפים נוספים. התנסו בהם באופן דומה.\n</div>";
             }
 
-            if (tutorialClicks == 20) {
+            if (tutorialClicks === 20) {
                 style = document.createElement('style');
                 style.type = 'text/css';
                 style.innerHTML = `
@@ -161,7 +161,7 @@
                 }
                 `;
                 tutorialStyle = document.getElementsByTagName('head')[0].appendChild(style);
-            } else if (tutorialClicks == -1) {
+            } else if (tutorialClicks === -1) {
                 document.getElementsByTagName('head')[0].removeChild(tutorialStyle);
             }
         }
@@ -199,6 +199,7 @@
         var hexBrightColor = HSLToHex(hslBrightColor['h'], hslBrightColor['s'], hslBrightColor['l'])
         var hexDarkColor = HSLToHex(hslDarkColor['h'], hslDarkColor['s'], hslDarkColor['l'])
         var hexMidRandColor = HSLToHex(hslMidRandColor['h'], hslMidRandColor['s'], hslMidRandColor['l'])
+        console.log(hslMidRandColor, hexMidRandColor)
 
         showHint = async function () {
             // Disable hint button to allow one hint per trial.
@@ -345,9 +346,7 @@
                 labels: ['1', '2', '3', '4', '5', '6', '7'],
                 min: 1,
                 max: 7,
-                slider_start: 1,
-                slider_end: 7,
-                stimulus: "<p>באיזו מידה הרגשת שאתה מחובר לתחושות הפנימיות שלך במהלך הניסוי?</p> <p>(1 = לא מחובר כלל, 7 = מחובר מאוד)</p>",
+                stimulus: "<p>באיזו מידה הרגשת שאתה מחובר לאינטואיציות ולתחושות הפנימיות שלך במהלך הניסוי?</p> <p>(1 = לא מחובר כלל, 7 = מחובר מאוד)</p>",
                 button_label: 'המשך',
             };
             timeline.push(responce);
@@ -399,7 +398,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-body text-right" id="modal-body-div">
-                            <p>ציונך עבור הצבע שבחרת הוא: ${(data.final_value * 100).toFixed(0)}</p>
+                            <p>הניקוד עבור הצבע שבחרת הוא: ${(data.final_value * 100).toFixed(0)}</p>
                             
                             <div class="jspsych-html-slider-response-container" style="position:relative; margin: 0 auto 3em auto; width:auto;">
                                 <input type="range" class="jspsych-slider" value="${(1 - data.final_value) * 100}" min="0" max="100" step="1" id="jspsych-html-slider-response-response" disabled>
@@ -511,13 +510,21 @@
                 instructions = {
                     type: 'instructions',
                     pages: [`
-                        <div id="audio-player-container" class="instructions">
-                            <audio id="audio-file"
+                        <div>
+                            <h1>ברוכים הבאים לניסוי בחירת הצבע!</h1><br/>
+                            <p>
+                            לפני תחילת משחק בחירת הצבע, תאזינו לקטע אודיו קצר שאורכו 10 דק. לשם כך אתם מתבקשים לשים את האוזניות שלרשותכם וללחוץ על כפתור Play.<br/>
+                            שימו לב שהקטע יופעל ברצף ולא ניתן לעשות הפסקות במהלכו.<br/>
+                            בסיום ההאזנה, הורידו את האוזניות ולחצו על כפתור ״הבא״ בכדי להתחיל במשחק.
+                            </p>
+                            <div id="audio-player-container" class="instructions">
+                                <audio id="audio-file"
                                 src='${audioFileLong}'}
                                 controls
                                 controlslist="nodownload noplaybackrate nofullscreen no remoteplayback"
                                 onPlay="disableAudioPlayer()"
                                 onended="resumeProgressWhenDonePlaying()"/>
+                            </div>
                         </div>
                     `],
                     on_load: blockProgressWhilePlaying,
@@ -532,16 +539,23 @@
 
             case 'manipulation_short':
                 const audioFileShort = isGroupA() ? audioFiles.mindfulness_short : audioFiles.relaxing_short;
+                console.log(audioFileShort)
+                console.log(randomParticipants);
                 instructions = {
                     type: 'instructions',
                     pages: [`
-                        <div id="audio-player-container" class="instructions">
-                            <audio id="audio-file"
-                                src='${audioFileShort}'}
-                                controls
-                                controlslist="nodownload noplaybackrate nofullscreen no remoteplayback"
-                                onPlay="disableAudioPlayer()"
-                                onended="resumeProgressWhenDonePlaying()"/>
+                        <div>
+                            <p>
+                            כעת תאזינו לקטע אודיו נוסף שאורכו 50 שניות. לשם כך שימו שוב את האוזניות שברשותכם.<br/> בסיום הקטע לחצו על כפתור ״הבא״ והמשיכו במשחק.
+                            </p>
+                            <div id="audio-player-container" class="instructions">
+                                <audio id="audio-file"
+                                    src='${audioFileShort}'}
+                                    controls
+                                    controlslist="nodownload noplaybackrate nofullscreen no remoteplayback"
+                                    onPlay="disableAudioPlayer()"
+                                    onended="resumeProgressWhenDonePlaying()"/>
+                            </div>
                         </div>
                     `],
                     on_load: blockProgressWhilePlaying,
@@ -559,7 +573,8 @@
                     type: 'instructions',
                     pages: [`
                         <div class="instructions">
-                            <h1>ברוכים הבאים לניסוי בחירת הצבע!</h1><br/>
+                            <h1>משחק בחירת הצבע</h1><br/>
+
                             בכל סיבוב יוצגו בפניך שלושה ריבועים צבעוניים, באופן כזה:
                             <br/>
                             <img src="assets/example.png"/>
@@ -619,16 +634,16 @@
                     pages: [`
                         <div class="instructions">
                             <h1>שלב אימון 2</h1><br/>
-                            בשלבי האימון הבאים תקבלו פידבק, שייאפשר לכם לשפר את ביצועיכם במשחק. בסיום כל צעד בניסוי, לאחר שתלחצו על כפתור "בחר", יוצג בפניכם ציון המתייחס לתשובתכם. הפידבק יוצג הן באופן מספרי והן באמצעות ציר, כמו בדוגמה הבאה:
+                            בשלבי האימון הבאים תקבלו פידבק, שייאפשר לכם לשפר את ביצועיכם במשחק. בסיום כל צעד בניסוי, לאחר שתלחצו על כפתור "בחר", יוצג בפניכם פידבק המתייחס לתשובתכם. הפידבק יוצג הן באופן מספרי והן באמצעות ציר, כמו בדוגמה הבאה:
                             <br/>
                             <br/>
-                            <img src="./assets/modal-example.png"/>
+                            <img style="width: 500px" src="./assets/modal-example.png"/>
                             <br/><br/>
-                            הציון הגבוה ביותר שניתן לקבל הוא 50, ומשמעותו שהצבע שנבחר ע"י השחקן/ית נמצא בדיוק באמצע הרצף, כלומר, שהשחקן/ית הצליחו למצוא את נקודת האמצע המדויקת בין שני הקצוות.
+                            הערך המוצג מתייחס למיקום של הצבע הנבחר על גבי רצף הבהירות. כאשר ערך זה הוא 50, המשמעות היא שהצבע שנבחר ע"י השחקן/ית נמצא בדיוק באמצע הרצף, כלומר, שהשחקן/ית הצליחו למצוא את נקודת האמצע המדויקת בין שני הקצוות.
                             <br/><br/>
-                            בדוגמה זו התקבל הציון 86, כלומר, הצבע שנבחר בהיר יותר מנקודת האמצע האמיתית.
+                            בדוגמה זו התקבל הערך 61, כלומר, הצבע שנבחר כהה יותר מנקודת האמצע האמיתית.
                             <br/><br/>
-                            ככל שהציון קרוב יותר ל-50, כך הוא מצביע על ביצוע מדויק יותר. ככל שהציון מתקרב ל0 (הקצה הבהיר ביותר) או ל100 (הקצה הכהה ביותר), הוא מצביע על ביצוע מדויק פחות. לפיכך, ציון 86 כמו בדוגמה שווה בערכו לציון 14.
+                            ככל שהערך קרוב יותר ל-50, כך הוא מצביע על ביצוע מדויק יותר. ככל שהוא מתקרב ל0 (הקצה הבהיר ביותר) או ל100 (הקצה הכהה ביותר), הוא מצביע על ביצוע מדויק פחות.
                             <br/>
                         </div>
                     `],
@@ -647,7 +662,7 @@
                         <div class="instructions">
                             <h1>שלב אימון 3</h1>
                             <br/>
-                            בשלב האימון הבא, תוכלו לבקש רמז שיעזור לכם למצוא את נקודת האמצע המדויקת ביותר. את הרמז תוכלו לבקש באמצעות לחיצה על כפתור "לחצו לקבל רמז".
+                            בשלב האימון הבא, תוכלו לבקש רמז שיעזור לכם למצוא את נקודת האמצע המדויקת ביותר. את הרמז תוכלו לבקש באמצעות לחיצה על כפתור "לחצו לקבלת רמז".
                             <br/><br/>
                             הרמזים שתקבלו מבוססים על תשובותיהם של נבדקים ששיחקו בעבר במשחק.
                         </div>
@@ -691,19 +706,7 @@
                             <br/><br/>
                             כעת יתחיל המשחק עצמו, שבו תתבקשו להמשיך ולמצוא את הצבע שהינו נקודת האמצע בין שני הריבועים העליונים, כמו בשלב האימון.
                             <br/><br/>
-                            מעתה ואילך ביצועיכם יירשמו וישוקללו בתוצאות הסופיות. שימו לב, הזמן בכל צעד אינו מוגבל. ציונכם ייקבע על פי מידת הדיוק, ולא על פי קצב הביצוע.
-                            <br/>
-                        </div>
-                    `, `
-                        <div class="instructions">
-                            בשלב זה, תקבלו מעת לעת רמזים במהלך הצעדים. הרמזים יינתנו באופן אוטומטי, מבלי שתוכלו לבקש אותם. לעתים תקבלו רמזים המבוססים על המדגם הקטן ולעתים תקבלו רמזים המבוססים על המדגם הגדול.
-                            <br/><br/>
-                            זכרו:
-                            <br/>
-                            <ul>
-                                <li>סוג האייקון המופיע (חץ ימינה/חץ שמאלה/סימן וי) מסמן מהי הפעולה שבה נקטו רוב המשתתפים באחד המדגמים הקודמים, בעוד שהמספר המופיע בצד האייקון מייצג את גודל המדגם שממנו נלקחו נתונים אלו.</li>
-                                <li>ככל שרמז מבוסס על מדגם גדול יותר, כך עולה הסבירות שיכיל מידע מדויק.</li>
-                            </ul>
+                            מעתה ואילך ביצועיכם יירשמו וישוקללו בתוצאות הסופיות. שימו לב, הזמן בכל צעד אינו מוגבל. איכות הביצוע תיקבע על פי מידת הדיוק, ולא על פי קצב הביצוע.
                             <br/>
                         </div>
                     `],
@@ -722,16 +725,9 @@
                         <div class="instructions">
                             <h1>שלב הניסוי השני</h1>
                             <br/>
-                            שלב המשחק הראשון הסתיים. כעת יתחיל שלב המשחק השני.
+                            שלב המשחק הראשון הסתיים, וכעת יתחיל שלב המשחק השני.
                             <br/><br/>
-                            בשלב זה תוכלו לבקש רמזים באמצעות לחיצה על כפתור "לחצו לקבלת רמז", בדומה למה שתירגלתם בשלב האימון. עם זאת, כעת בכל פעם שתבקשו רמז, המסך יקפא ויהיה עליכם להמתין עשר שניות לפני שתוכלו להמשיך לשחק (אין לכך השפעה על ציונכם).
-                            <br/><br/>
-                            בחלק מהצעדים יוצעו לכם רמזים המבוססים על המדגם הקטן ובחלק מהצעדים יוצעו לכם רמזים המבוססים על המדגם הגדול, באופן מעורבב.
-                            <br/><br/>
-                            שימו לב כי בטרם תלחצו על הכפתור תוכלו לדעת מהו סוג הרמז המוצע לכם, לפי המספר שכתוב על גבי הכפתור. בכל צעד יוצע לכם רמז מסוג אחד בלבד.
-                            <br/>
-                            TODO: add picture of hint button
-                            <br/>
+                            בשלב זה תוכלו לבקש רמזים באמצעות לחיצה על כפתור "לחצו לקבלת רמז", בדומה למה שתירגלתם בשלב האימון. עם זאת, כעת בכל פעם שתבקשו רמז, המסך יקפא ויהיה עליכם להמתין עשר שניות לפני שתוכלו להמשיך לשחק. <br/> לבקשת הרמז או לזמן שעליכם להמתין לאחר בקשתו אין כל השפעה על תוצאותיכם במשחק.
                         </div>
                     `],
                     show_clickable_nav: true,
@@ -747,7 +743,7 @@
                     type: 'instructions',
                     pages: [
                         `<div>
-                        הניסוי הסתיים, תודה רבה על השתתפותך!
+                        חלק זה של הניסוי הסתיים, תודה רבה על השתתפותך! <br/> קרא לנסיין בכדי לעבור לחלק הבא.
                         </div>`
                     ],
                     show_clickable_nav: false,
@@ -773,36 +769,35 @@
 
     create_instructions(timeline, 'participant id');
 
-    console.table(randomParticipants)
     create_instructions(timeline, 'manipulation_long');
 
     // Introduction Message
-    create_instructions(timeline, 'start')
+    create_instructions(timeline, 'start');
 
     // Practice Runs
-    create_instructions(timeline, 'practice 1')
-    create_trials(timeline, 5, 'practice 1', 'no feedback', 'no hints')
+    create_instructions(timeline, 'practice 1');
+    create_trials(timeline, 5, 'practice 1', 'no feedback', 'no hints');
 
-    create_instructions(timeline, 'practice 2')
-    create_trials(timeline, 5, 'practice 2', 'with feedback', 'no hints')
+    create_instructions(timeline, 'practice 2');
+    create_trials(timeline, 5, 'practice 2', 'with feedback', 'no hints');
 
-    create_instructions(timeline, 'practice 3')
-    create_trials(timeline, 5, 'practice 3', 'no feedback', 'with hints', [5], 0, 0.8)
+    create_instructions(timeline, 'practice 3');
+    create_trials(timeline, 5, 'practice 3', 'no feedback', 'with hints', [5], 0, 0.8);
 
     // 1st experiment
-    create_instructions(timeline, 'experiment 1')
-    create_trials(timeline, 50, 'experiment 1', 'no feedback', 'no hints', [5], 0, 0.8)
+    create_instructions(timeline, 'experiment 1');
+    create_trials(timeline, 50, 'experiment 1', 'no feedback', 'no hints', [5], 0, 0.8);
 
-    // create_instructions(timeline, 'manipulation_short')
+    create_instructions(timeline, 'manipulation_short');
 
     // 2nd experiment
-    create_instructions(timeline, 'experiment 2')
-    create_trials(timeline, 50, 'experiment 2', 'no feedback', 'with hints', [5], 10, 1)
+    create_instructions(timeline, 'experiment 2');
+    create_trials(timeline, 50, 'experiment 2', 'no feedback', 'with hints', [5], 10, 1);
 
     create_question(timeline, 'confidence');
 
     // Ending Screen
-    create_instructions(timeline, 'end')
+    create_instructions(timeline, 'end');
 
     jsPsych.init({timeline: timeline});
 </script>
