@@ -52,3 +52,23 @@ audio::-webkit-media-controls-timeline {
     padding: 6px;
     border-radius: 5px;
 }
+
+.jspsych-survey-multi-choice-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.jspsych-survey-multi-choice-text input[type='radio'] {
+    margin: 0 !important;
+}
+
+.survey-multi-choice {
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+span.required {
+    display: none !important;
+}

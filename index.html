@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <base href="/ofir-psych-color-exp/">
+<!--    <base href="/ofir-psych-color-exp/">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"/>
     <link type="text/css" rel="stylesheet"
@@ -27,6 +27,9 @@
     <script src="pkg/jspsych/plugins/jspsych-reconstruction.js"></script>
     <script src="pkg/jspsych/plugins/jspsych-instructions.js"></script>
     <script src="pkg/jspsych/plugins/jspsych-html-slider-response.js"></script>
+    <script src="pkg/jspsych/plugins/jspsych-html-button-response.js"></script>
+    <script src="pkg/jspsych/plugins/jspsych-survey-multi-choice.js"></script>
+
     <script src="pkg/ColorConverter.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.1.8/chance.min.js"
@@ -339,17 +342,50 @@
     }
 
     const create_question = function (timeline, type) {
-        if (type === 'confidence') {
-            const responce = {
-                type: 'html-slider-response',
-                class: 'question-slider',
-                labels: ['1', '2', '3', '4', '5', '6', '7'],
-                min: 1,
-                max: 7,
-                stimulus: "<p>באיזו מידה הרגשת שאתה מחובר לאינטואיציות ולתחושות הפנימיות שלך במהלך הניסוי?</p> <p>(1 = לא מחובר כלל, 7 = מחובר מאוד)</p>",
-                button_label: 'המשך',
-            };
-            timeline.push(responce);
+        switch (type) {
+            case 'confidence': {
+                const responce = {
+                    type: 'html-slider-response',
+                    class: 'question-slider',
+                    labels: ['1', '2', '3', '4', '5', '6', '7'],
+                    min: 1,
+                    max: 7,
+                    stimulus: "<p>באיזו מידה הרגשת שאתה מחובר לאינטואיציות ולתחושות הפנימיות שלך במהלך הניסוי?</p> <p>(1 = לא מחובר כלל, 7 = מחובר מאוד)</p>",
+                    button_label: 'המשך',
+                };
+                timeline.push(responce);
+                break;
+            }
+            case 'difficulty': {
+                const responce = {
+                    type: 'html-slider-response',
+                    class: 'question-slider',
+                    labels: ['1', '2', '3', '4', '5'],
+                    min: 1,
+                    max: 5,
+                    stimulus: "<p>עד כמה המטלה הייתה לך קשה?</p> <p>(1 = לא קשה כלל, 5 = קשה מאוד)</p>",
+                    button_label: 'המשך',
+                };
+                timeline.push(responce);
+                break;
+            }
+            case 'counting': {
+                const responce = {
+                    type: 'survey-multi-choice',
+                    questions: [
+                        {
+                            prompt: "האם נעזרת בספירה של הלחיצות על מנת לחשב את נקודת האמצע?",
+                            name: 'selected answer',
+                            options: ['4 - כל הזמן', '3 - כמעט כל הזמן', '2 - בחלק מהזמן', '1 - כלל לא'],
+                            horizontal: true,
+                            required: true
+                        }
+                    ],
+                    button_label: "המשך"
+                };
+                timeline.push(responce);
+                break;
+            }
         }
     }
 
@@ -795,6 +831,10 @@
     create_trials(timeline, 50, 'experiment 2', 'no feedback', 'with hints', [5], 10, 1);
 
     create_question(timeline, 'confidence');
+
+    create_question(timeline, 'difficulty');
+
+    create_question(timeline, 'counting');
 
     // Ending Screen
     create_instructions(timeline, 'end');
