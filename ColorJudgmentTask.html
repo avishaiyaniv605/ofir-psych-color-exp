@@ -93,8 +93,6 @@
 
     function recordHintReliance(param) {
         if (hintWasJustShown) {
-            console.log("recording")
-            console.log(param)
             hintWasJustShown = false // Since hint is shown once per experiment, this ensures us that we won't record hint reliance again.
             let current_value = Number((1 - param).toFixed(2))
             if ((selectedHint === 'neither')
@@ -116,7 +114,6 @@
                                     numPressesBeforeHintExp1,
                                     title,
                                     phase) {
-        console.log("BEFORE", currentValue)
 
         let tutorial = '';
         let hideLeft = false;
@@ -201,7 +198,6 @@
         var hexBrightColor = HSLToHex(hslBrightColor['h'], hslBrightColor['s'], hslBrightColor['l'])
         var hexDarkColor = HSLToHex(hslDarkColor['h'], hslDarkColor['s'], hslDarkColor['l'])
         var hexMidRandColor = HSLToHex(hslMidRandColor['h'], hslMidRandColor['s'], hslMidRandColor['l'])
-        console.log(hslMidRandColor, hexMidRandColor)
 
         showHint = async function () {
             // Disable hint button to allow one hint per trial.
@@ -421,7 +417,6 @@
         data.start_value = Number((1 - data.start_value).toFixed(2))
         if (withFeeback === 'with feedback') {
             // feedback for the practice trial
-            console.log('trying to trigger modal')
             let div = document.querySelector('#feedback-wrap-div') ?
                 document.querySelector('#feedback-wrap-div') : document.createElement('div')
             div.id = 'feedback-wrap-div'
@@ -541,7 +536,6 @@
 
             case 'manipulation_long':
                 const audioFileLong = isGroupA() ? audioFiles.mindfulness_long : audioFiles.relaxing_long;
-                console.log(audioFileLong)
                 instructions = {
                     type: 'instructions',
                     pages: [`
@@ -574,8 +568,6 @@
 
             case 'manipulation_short':
                 const audioFileShort = isGroupA() ? audioFiles.mindfulness_short : audioFiles.relaxing_short;
-                console.log(audioFileShort)
-                console.log(randomParticipants);
                 instructions = {
                     type: 'instructions',
                     pages: [`
@@ -631,7 +623,9 @@
                             <br/><br/>
                             במהלך כל צעד בניסוי תוכלו לשנות את בהירות הצבע שבריבוע האמצעי ככל שתרצו. כאשר אתם סבורים כי הצבע המופיע בריבוע האמצעי מהווה את האמצע המדויק בין שני קצוות הרצף, לחצו על כפתור "בחר" באמצעות העכבר.
                             <br/>
-                            טיפ: הטווח בין הריבועים הוא
+                            <br/>
+                            טיפ: טווח הבהירות של הריבוע האמצעי הוא מוגבל ואסימטרי, כך שלא ניתן למצוא את נקודת האמצע המדויקת באמצעות ספירת הצעדים.
+                            עליכם להסתמך על השיפוט הסובייקטיבי שלכם.
                         </div>
                     `,],
                     show_clickable_nav: true,
@@ -801,6 +795,7 @@
     const shuffler = new Chance(123456789);
     randomParticipants = _.chunk(randomParticipants, 10);
     randomParticipants = randomParticipants.map(tenElem => shuffler.shuffle(tenElem));
+    console.table(randomParticipants);
     var timeline = []
 
     create_instructions(timeline, 'participant id');

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-<!--    <base href="/ofir-psych-color-exp/">-->
+    <!--    <base href="/ofir-psych-color-exp/">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"/>
     <link type="text/css" rel="stylesheet"
@@ -51,8 +51,8 @@
     const DEFAULT_SAMPLE_SIZES = [5]
     const EXTREME_LEFT = 0.25
     const EXTREME_RIGHT = 0.75
-    var maxLight = 70
-    var minLight = 30
+    var maxLight = 73
+    var minLight = 28
     var counter
     var color
     var showHint
@@ -73,9 +73,8 @@
         relaxing_short: "./assets/music/Relaxing-short.mp3",
     };
     // let currentParticipant = -1;
-    const numOfParticipants = 200;
-    let randomParticipants = [...Array(numOfParticipants).keys()]
-        .map(x => x % 2 === 0 ? "groupA" : "groupB");
+    const numOfParticipants = 210;
+    let randomParticipants = [...Array(numOfParticipants).keys()].map(x => x % 2 === 0 ? "groupA" : "groupB");
 
     function getRandomInt(randomGenerator, min, max) { // Gets a random value between min and max.
         min = Math.ceil(min);
@@ -94,8 +93,6 @@
 
     function recordHintReliance(param) {
         if (hintWasJustShown) {
-            console.log("recording")
-            console.log(param)
             hintWasJustShown = false // Since hint is shown once per experiment, this ensures us that we won't record hint reliance again.
             let current_value = Number((1 - param).toFixed(2))
             if ((selectedHint === 'neither')
@@ -117,7 +114,6 @@
                                     numPressesBeforeHintExp1,
                                     title,
                                     phase) {
-        console.log("BEFORE", currentValue)
 
         let tutorial = '';
         let hideLeft = false;
@@ -202,7 +198,6 @@
         var hexBrightColor = HSLToHex(hslBrightColor['h'], hslBrightColor['s'], hslBrightColor['l'])
         var hexDarkColor = HSLToHex(hslDarkColor['h'], hslDarkColor['s'], hslDarkColor['l'])
         var hexMidRandColor = HSLToHex(hslMidRandColor['h'], hslMidRandColor['s'], hslMidRandColor['l'])
-        console.log(hslMidRandColor, hexMidRandColor)
 
         showHint = async function () {
             // Disable hint button to allow one hint per trial.
@@ -422,7 +417,6 @@
         data.start_value = Number((1 - data.start_value).toFixed(2))
         if (withFeeback === 'with feedback') {
             // feedback for the practice trial
-            console.log('trying to trigger modal')
             let div = document.querySelector('#feedback-wrap-div') ?
                 document.querySelector('#feedback-wrap-div') : document.createElement('div')
             div.id = 'feedback-wrap-div'
@@ -542,7 +536,6 @@
 
             case 'manipulation_long':
                 const audioFileLong = isGroupA() ? audioFiles.mindfulness_long : audioFiles.relaxing_long;
-                console.log(audioFileLong)
                 instructions = {
                     type: 'instructions',
                     pages: [`
@@ -575,8 +568,6 @@
 
             case 'manipulation_short':
                 const audioFileShort = isGroupA() ? audioFiles.mindfulness_short : audioFiles.relaxing_short;
-                console.log(audioFileShort)
-                console.log(randomParticipants);
                 instructions = {
                     type: 'instructions',
                     pages: [`
@@ -632,6 +623,9 @@
                             <br/><br/>
                             במהלך כל צעד בניסוי תוכלו לשנות את בהירות הצבע שבריבוע האמצעי ככל שתרצו. כאשר אתם סבורים כי הצבע המופיע בריבוע האמצעי מהווה את האמצע המדויק בין שני קצוות הרצף, לחצו על כפתור "בחר" באמצעות העכבר.
                             <br/>
+                            <br/>
+                            טיפ: טווח הבהירות של הריבוע האמצעי הוא מוגבל ואסימטרי, כך שלא ניתן למצוא את נקודת האמצע המדויקת באמצעות ספירת הצעדים.
+                            עליכם להסתמך על השיפוט הסובייקטיבי שלכם.
                         </div>
                     `,],
                     show_clickable_nav: true,
