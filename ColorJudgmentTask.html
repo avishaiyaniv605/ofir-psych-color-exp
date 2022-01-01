@@ -73,9 +73,8 @@
         relaxing_short: "./assets/music/Relaxing-short.mp3",
     };
     // let currentParticipant = -1;
-    const numOfParticipants = 200;
-    let randomParticipants = [...Array(numOfParticipants).keys()]
-        .map(x => x % 2 === 0 ? "groupA" : "groupB");
+    const numOfParticipants = 210;
+    let randomParticipants = [...Array(numOfParticipants).keys()].map(x => x % 2 === 0 ? "groupA" : "groupB");
 
     function getRandomInt(randomGenerator, min, max) { // Gets a random value between min and max.
         min = Math.ceil(min);
