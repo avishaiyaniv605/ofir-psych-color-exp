@@ -150,16 +150,18 @@
             }
 
             if (tutorialClicks === 20) {
-                style = document.createElement('style');
-                style.type = 'text/css';
-                style.innerHTML = `
+                const newStyle = document.createElement('style');
+                newStyle.type = 'text/css';
+                newStyle.innerHTML = `
                 .jspsych-btn {
                     background: transparent;
                     border: none !important;
                     font-size:0;
+                    cursor: not-allowed;
+                    pointer-events: none;
                 }
                 `;
-                tutorialStyle = document.getElementsByTagName('head')[0].appendChild(style);
+                tutorialStyle = document.getElementsByTagName('head')[0].appendChild(newStyle);
             } else if (tutorialClicks === -1) {
                 document.getElementsByTagName('head')[0].removeChild(tutorialStyle);
             }
@@ -274,7 +276,7 @@
     `;
 
         const hintIndex = `
-            <div style="background: #B1D4E0; border-radius: 5px; padding: 20px; align-items: flex-start; justify-content: space-between; height: 200px; width: 700px; right: -202px; top: 410px; display: ${title === 'practice 3' ? 'flex' : 'none'}; position: absolute; flex-direction: column; border: 1px solid black">
+            <div style="background: #B1D4E0; border-radius: 5px; padding: 20px; align-items: flex-start; justify-content: space-between; height: 200px; width: 700px; right: -202px; top: 380px; display: ${title === 'practice 3' ? 'flex' : 'none'}; position: absolute; flex-direction: column; border: 1px solid black">
                 <div style="align-items: center; display: flex; justify-content: space-around;">
                     <div style="display: flex; width: 60px; justify-content: space-around; padding-left: 10px;">
                         <i class="bi bi-arrow-right" style="font-size:16pt; padding-top: 5px;"></i>
@@ -312,9 +314,9 @@
         `
         const colorSquares = '<div id="bright-square" style="display: block; position: absolute; top: ' + (150 - size / 2) + 'px; left:' + (50 - size / 2) + 'px; background-color: ' + hexBrightColor + '; ' +
             'width: ' + size + 'px; height: ' + size + 'px;"></div>' +
-            '<div id="mid-square" style="display: block; position: absolute; top: ' + (150 - size / 2) + 'px; left:' + (250 - size / 2) + 'px; background-color: ' + hexDarkColor + '; ' +
+            '<div id="dark-square" style="display: block; position: absolute; top: ' + (150 - size / 2) + 'px; left:' + (250 - size / 2) + 'px; background-color: ' + hexDarkColor + '; ' +
             'width: ' + size + 'px; height: ' + size + 'px;"></div>' +
-            '<div id="dark-square" style="display: block; position: absolute; top: ' + (250 - size / 2) + 'px; left:' + (150 - size / 2) + 'px; background-color: ' + hexMidRandColor + '; ' +
+            '<div id="mid-square" style="display: block; position: absolute; top: ' + (250 - size / 2) + 'px; left:' + (150 - size / 2) + 'px; background-color: ' + hexMidRandColor + '; ' +
             'width: ' + size + 'px; height: ' + size + 'px;"></div>';
 
         return `
@@ -795,6 +797,7 @@
     const shuffler = new Chance(123456789);
     randomParticipants = _.chunk(randomParticipants, 10);
     randomParticipants = randomParticipants.map(tenElem => shuffler.shuffle(tenElem));
+    console.table(randomParticipants);
     var timeline = []
 
     create_instructions(timeline, 'participant id');

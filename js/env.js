@@ -36,7 +36,7 @@ function getCurrentParticipantOrElse(orElse) {
 const isCurrentUserValid = () => {
     const currentParticipant = getCurrentParticipant();
 
-    if (!currentParticipant || Number(currentParticipant) < 1 || Number(currentParticipant) > 200) {
+    if (!currentParticipant || Number(currentParticipant) < 1 || Number(currentParticipant) > numOfParticipants) {
         return false;
     }
     return true;
