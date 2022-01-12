@@ -794,9 +794,15 @@
     // ================= Timeline Setup for the Entire Study ==================
     // ========================================================================
 
+    function setPilotParticipants(participantsToChange) {
+        participantsToChange[20][2] = "groupA"
+        participantsToChange[20][8] = "groupB"
+    }
+
     const shuffler = new Chance(123456789);
     randomParticipants = _.chunk(randomParticipants, 10);
     randomParticipants = randomParticipants.map(tenElem => shuffler.shuffle(tenElem));
+    setPilotParticipants(randomParticipants)
     console.table(randomParticipants);
     var timeline = []
 
