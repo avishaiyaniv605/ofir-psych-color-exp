@@ -325,8 +325,8 @@
     }
 
     const getSanityCheck = (phase, title) => {
-        const shouldCheckInEx1 = phase === 27 && title === "experiment 1";
-        const shouldCheckInEx2 = phase === 36 && title === "experiment 2";
+        const shouldCheckInEx1 = phase === 22 && title === "experiment 1";
+        const shouldCheckInEx2 = phase === 26 && title === "experiment 2";
         const darkOrLight = shouldCheckInEx1 ? "הכהה" : "הבהיר";
         if (shouldCheckInEx1 || shouldCheckInEx2) {
             return `
@@ -825,13 +825,13 @@
 
     // 1st experiment
     create_instructions(timeline, 'experiment 1');
-    create_trials(timeline, 50, 'experiment 1', 'no feedback', 'no hints', [5], 0, 0.8);
+    create_trials(timeline, 41, 'experiment 1', 'no feedback', 'no hints', [5], 0, 0.8);
 
     create_instructions(timeline, 'manipulation_short');
 
     // 2nd experiment
     create_instructions(timeline, 'experiment 2');
-    create_trials(timeline, 50, 'experiment 2', 'no feedback', 'with hints', [5], 10, 1);
+    create_trials(timeline, 41, 'experiment 2', 'no feedback', 'with hints', [5], 10, 1);
 
     create_question(timeline, 'confidence');
 
