@@ -1,3 +1,10 @@
+const disableAudioPlayer = function () {
+    document.getElementById("audio-file").style.transition = "all 0.4s";
+    document.getElementById("audio-file").style.opacity = "0.3";
+    document.getElementById("audio-file").style.userSelect = "none";
+    document.getElementById("audio-file").style.pointerEvents = "none";
+}
+
 const blockProgressWhilePlaying = function () {
     document.getElementById("jspsych-instructions-next").disabled = true;
 }

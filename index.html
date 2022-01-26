@@ -114,7 +114,6 @@
                                     numPressesBeforeHintExp1,
                                     title,
                                     phase) {
-
         let tutorial = '';
         let hideLeft = false;
         let hideRight = false;
@@ -464,6 +463,18 @@
         }
     }
 
+    const flickerSquares = () => {
+        setTimeout(() => {
+            $("#bright-square").fadeOut(200)
+            $("#mid-square").fadeOut(200)
+            $("#dark-square").fadeOut(200)
+
+            $("#bright-square").fadeIn(200)
+            $("#mid-square").fadeIn(200)
+            $("#dark-square").fadeIn(200)
+        }, 0)
+    }
+
     // trials
     var create_trials = function (
         timeline,
@@ -508,7 +519,10 @@
                     // will be modified in on_start_trial()
                     title: title,
                 },
-                on_finish: (data) => on_finish_trial(data, withFeeback),
+                on_finish: (data) => {
+                    flickerSquares()
+                    on_finish_trial(data, withFeeback)
+                }
             };
             timeline.push(trial);
         }
@@ -537,6 +551,7 @@
                 break;
 
             case 'manipulation_long':
+                const x = ""
                 const audioFileLong = isGroupA() ? audioFiles.mindfulness_long : audioFiles.relaxing_long;
                 instructions = {
                     type: 'instructions',
@@ -671,7 +686,7 @@
                             <br/>
                             <img style="width: 500px" src="./assets/modal-example.png"/>
                             <br/><br/>
-                            הערך המוצג מתייחס למיקום של הצבע הנבחר על גבי רצף הבהירות. כאשר ערך זה הוא 50, המשמעות היא שהצבע שנבחר ע"י השחקן/ית נמצא בדיוק באמצע הרצף, כלומר, שהשחקן/ית הצליחו למצוא את נקודת האמצע המדויקת בין שני הקצוות.
+                            הערך המוצג מתייחס למיקום של הצבע שבחרת על גבי רצף הבהירות. כאשר ערך זה הוא 50, המשמעות היא שהצבע שבחרת נמצא בדיוק באמצע הרצף, כלומר, שהצלחת למצוא את נקודת האמצע המדויקת בין שני הקצוות.
                             <br/><br/>
                             בדוגמה זו התקבל הערך 61, כלומר, הצבע שנבחר כהה יותר מנקודת האמצע האמיתית.
                             <br/><br/>
@@ -709,12 +724,18 @@
                             אם רוב הנבדקים בחרו בצבע כהה יותר מהצבע המוצג כעת בריבוע האמצעי (כלומר, המשיכו עוד ימינה על הרצף בטרם לחצו "בחר"), יופיע חץ שמורה ימינה, כמו בדוגמה הנ"ל.
                             <br/><br/>
                             באותו אופן, אם רוב הנבדקים בחרו בצבע בהיר יותר מהצבע המוצג כעת בריבוע האמצעי, יופיע חץ המורה שמאלה.
-                            <br/><br/>
-                            אם רוב הנבדקים בחרו כנקודת האמצע את הצבע המוצג כעת בריבוע האמצעי, יופיע סימן וי.
-                            <br/><br/>
+                            <span style="display: flex; align-items: center;">
+                            אם רוב הנבדקים בחרו כנקודת האמצע את הצבע המוצג כעת בריבוע האמצעי, יופיע הסימן הבא:
+                            <div style="padding-right: 10px; display: flex; flex-direction: column">
+                                <i class="bi bi-check-circle" style="font-size:16pt; margin-bottom: -6px"></i>
+                                <h3 >
+                                    <i class="bi bi-people-fill"></i>
+                                </h3>
+                            </div>
+                            </span>
                             שימו לב!
                             <br/>
-                            תוצאות הניסויים הקודמים הצביעו על רמות דיוק גבוהות, כך שבמרבית המקרים ניתן להסתמך על המידע הניתן ברמזים. עם זאת, הביצוע של משתתפי המשחקים הקודמים לא היה מושלם, ולכן בחלק קטן מהמקרים הרמז עלול להטעות.
+                            תוצאות הניסויים הקודמים הצביעו על רמות דיוק גבוהות, כך שבמרבית המקרים ניתן להסתמך על המידע הניתן ברמזים. עם זאת, הביצוע של משתתפי המשחקים הקודמים לא היה מושלם, ולכן בחלק מהמקרים הרמז עלול להטעות.
                             <br/><br/>
                            על מנת שתלמדו להכיר את ממשק הרמז, לחצו על כפתור ״לחץ לקבלת רמז״ בכל אחד מצעדי האימון ושימו לב לרמזים השונים שאתם מקבלים.
                         </div>
