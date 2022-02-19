@@ -802,6 +802,7 @@
                     show_clickable_nav: false,
                     on_load: () => {
                         // save the experiment data to a csv file.
+                        addInfoToFinalData()
                         jsPsych.data.get().localSave('csv', 'Color Judgment Task.csv')
                     }
                 }
@@ -814,6 +815,14 @@
     // ========================================================================
     // ================= Timeline Setup for the Entire Study ==================
     // ========================================================================
+
+    function addInfoToFinalData() {
+        const participant = getCurrentParticipant()
+        jsPsych.data.addProperties({
+            participantId: participant,
+            group: isGroupA() ? "groupA - mindfulness" : "groupB - music"
+        });
+    }
 
     function setPilotParticipants(participantsToChange) {
         participantsToChange[20][2] = "groupA"
