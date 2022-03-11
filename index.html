@@ -66,6 +66,7 @@
     var tutorialStyle
     let prevValue = -1
     let currentValue = -1
+    let addedStyleForDemo = false
     const audioFiles = {
         mindfulness_long: "./assets/music/Mindfulness-long-new.m4a",
         mindfulness_short: "./assets/music/Mindfulness-short.m4a",
@@ -135,6 +136,7 @@
                 prevValue = currentValue;
             }
 
+            console.log("tutorialClicks: ", tutorialClicks)
             if (tutorialClicks > 10) {
                 hideLeft = true;
                 tutorial += "<div id='speech-bubble-right'>לחצו על המקש הימני עשר פעמים. שימו לב כיצד הצבע בריבוע האמצעי הופך לכהה יותר עם כל לחיצה. </div>"
@@ -142,13 +144,14 @@
                 hideRight = true;
                 tutorial += "<div id='speech-bubble-left'>חזרו על אותן הפעולות עם המקש השמאלי, וראו כיצד הצבע מתבהר. </div>"
             } else {
+                startedToUseTheDemoCorrectly = true;
                 tutorialClicks--;
                 tutorial += "<div id='speech-bubble-choose'> כעת נסו למצוא את נקודת האמצע. השתמשו בחצים כפי שעשיתם עד כה. כשאתם סבורים\n" +
                     "            שמצאתם את נקודת האמצע, לחצו על כפתור \"בחר\" באמצעות העכבר. לאחר שתלחצו על כפתור זה, יופיעו בזה אחר זה מספר\n" +
                     " רצפים נוספים. התנסו בהם באופן דומה.\n</div>";
             }
 
-            if (tutorialClicks === 20) {
+            if (tutorialClicks === 20 && !addedStyleForDemo) {
                 const newStyle = document.createElement('style');
                 newStyle.type = 'text/css';
                 newStyle.innerHTML = `
@@ -161,6 +164,7 @@
                 }
                 `;
                 tutorialStyle = document.getElementsByTagName('head')[0].appendChild(newStyle);
+                addedStyleForDemo = true
             } else if (tutorialClicks === -1) {
                 document.getElementsByTagName('head')[0].removeChild(tutorialStyle);
             }
@@ -836,9 +840,9 @@
     console.table(randomParticipants);
     var timeline = []
 
-    create_instructions(timeline, 'participant id');
+    // create_instructions(timeline, 'participant id');
 
-    create_instructions(timeline, 'manipulation_long');
+    // create_instructions(timeline, 'manipulation_long');
 
     // Introduction Message
     create_instructions(timeline, 'start');
